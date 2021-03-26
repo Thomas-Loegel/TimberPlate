@@ -3,18 +3,13 @@
 /**
  * Initialisation de Timber
  */
-$composer_autoload = __DIR__ . '/vendor/autoload.php';
-
-if ( file_exists( $composer_autoload ) ) {
-	require_once $composer_autoload;
-	$timber = new Timber\Timber();
-}
+$timber = new \Timber\Timber();
 
 
 /**
  * Localisation des vues .twig
  */
-Timber::$dirname = array( 'views' );
+Timber::$dirname = array( 'templates','views' );
 
 
 /**
@@ -26,7 +21,7 @@ Timber::$autoescape = false;
 /**
  * Custom Timber theme
  */
-class StarterSite extends Timber\Site
+class Starter extends Timber\Site
 {
     /**
      * Base WordPress & Custom
@@ -145,7 +140,7 @@ class StarterSite extends Timber\Site
 		return $context;
 	}
 }
-new StarterSite();
+new Starter();
 
 
 /**

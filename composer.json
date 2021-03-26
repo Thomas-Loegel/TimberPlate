@@ -10,8 +10,9 @@
     "require": {
         "php": "^7.2",
         "timber/timber": "^1.18",
-        "wordplate/framework": "^9.1",
-        "wpackagist-plugin/timber-library": "^1.18.2"
+        "twig/cache-extension": "^1.5",
+        "twig/cache-extra": "^3.3",
+        "wordplate/framework": "^9.1"
     },
     "config": {
         "optimize-autoloader": true,
