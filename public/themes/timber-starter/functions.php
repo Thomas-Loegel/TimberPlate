@@ -9,7 +9,7 @@ $timber = new \Timber\Timber();
 /**
  * Localisation des vues .twig
  */
-Timber::$dirname = array( 'templates','views' );
+Timber::$dirname = array( 'views' );
 
 
 /**
@@ -29,7 +29,7 @@ class Starter extends Timber\Site
     function __construct()
     {
         add_action( 'after_setup_theme', array( $this, 'theme_supports' ) );
-        add_action( 'wp_enqueue_scripts', array( $this, 'my_scripts') );
+        add_action( 'wp_enqueue_scripts', array( $this, 'custom_scripts') );
 		add_action( 'init', array( $this, 'register_post_types' ) );
 		add_action( 'init', array( $this, 'register_taxonomies' ) );
 		add_action( 'init', array( $this, 'register_widgets' ) );
@@ -49,7 +49,7 @@ class Starter extends Timber\Site
         add_theme_support( 'menus' );
         add_theme_support( 'title-tag' );
 		add_theme_support( 'post-thumbnails' );
-        add_theme_support( 'automatic-feed-links' );
+        // add_theme_support( 'automatic-feed-links' ); //Flux RSS
         add_theme_support(
 			'html5',
 			array(
@@ -77,15 +77,15 @@ class Starter extends Timber\Site
     /**
      * Css & JS
      */
-    public function my_scripts()
+    public function custom_scripts()
     {
         // jQuery
         wp_deregister_script( 'jquery' );
         wp_register_script( 'jquery', '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js', array(), null, true );
 
-        // Enqueue custom style
-        wp_enqueue_style( 'my-styles', get_template_directory_uri() . '/assets/css/main.css', 1.0);
-        wp_enqueue_script( 'my-js', get_template_directory_uri() . '/assets/js/main.js', array( 'jquery' ), '1.0.0', true );
+        // Enqueue custom styles
+        wp_enqueue_style( 'custom-styles', get_template_directory_uri() . '/assets/css/main.css', 1.0);
+        wp_enqueue_script( 'custom-scripts', get_template_directory_uri() . '/assets/js/main.js', array( 'jquery' ), '1.0.0', true );
     }
 
 
@@ -94,7 +94,7 @@ class Starter extends Timber\Site
      */
     public function register_post_types()
     {
-		require( 'lib/custom-types.php' );
+		require( 'inc/custom-types.php' );
 	}
 
 
@@ -103,7 +103,7 @@ class Starter extends Timber\Site
      */
 	public function register_taxonomies()
     {
-		require( 'lib/taxonomies.php' );
+		require( 'inc/taxonomies.php' );
 	}
 
 
@@ -112,7 +112,7 @@ class Starter extends Timber\Site
      */
     public function register_widgets()
     {
-        require( 'lib/widgets.php' );
+        require( 'inc/widgets.php' );
 	}
 
 
@@ -121,7 +121,7 @@ class Starter extends Timber\Site
      */
     public function register_menus()
     {
-        require( 'lib/menus.php' );
+        require( 'inc/menus.php' );
     }
 
 
@@ -146,4 +146,4 @@ new Starter();
 /**
  * Désactive les emojis
  */
-require_once 'lib/emoji.php';
+require_once 'inc/emoji.php';
