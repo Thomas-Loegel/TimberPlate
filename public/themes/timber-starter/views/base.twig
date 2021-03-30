@@ -8,36 +8,38 @@
 
 	<body class="{{body_class}}" data-template="base.twig">
 
-		<header class="header" >
+    {# En-tête de page #}
+		<header role="banner"  class="header" >
 			{% block header %}
-					<h1>
-						<a href="{{site.url}}" rel="home">{{site.name}}</a>
-					</h1>
+					<a href="{{site.url}}" rel="home">{{site.name}}</a>
 
-					<nav role="navigation">
+          {# Navigation du site #}
+					<nav role="navigation" class="nav" id="nav">
 						{% include "menu.twig" with {'items': menu.get_items} %}
 					</nav>
 			{% endblock %}
 		</header>
 
-		<main role="main">
+    {# Contenu de la page #}
+		<main role="main" class="main" id="content">
 			{% if title %} <h1>{{title}}</h1> {% endif %}
 
-			<div class="wrapper {{sidebar_class}}">
-				{% block content %}
-					Sorry, no content
-				{% endblock %}
-			</div>
+      {# Injection des views #}
+      {% block content %}
+        Sorry, no content
+      {% endblock %}
 
+      {# Sidebar #}
 			{% if sidebar %}
-				<aside class="sidebar">
+				<aside role="complementary" class="sidebar {{sidebar_class}}">
 					{{sidebar}}
 				</aside>
 			{% endif %}
 		</main>
 
+    {# Pied de page #}
 		{% block footer %}
-			<footer id="footer">
+			<footer role="contentinfo" class="footer">
 				{% include 'footer.twig' %}
 			</footer>
 			{{ function('wp_footer') }}
