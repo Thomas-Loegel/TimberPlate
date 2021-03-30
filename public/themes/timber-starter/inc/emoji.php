@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Disable emoji
  */
