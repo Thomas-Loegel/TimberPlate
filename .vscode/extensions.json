@@ -1,0 +1,16 @@
+{
+    "recommendations": [
+        "ms-azuretools.vscode-docker",
+        "EditorConfig.EditorConfig",
+        "DavidAnson.vscode-markdownlint",
+        "mrmlnc.vscode-scss",
+        "dbaeumer.vscode-eslint",
+        "stylelint.vscode-stylelint",
+        "bmewburn.vscode-intelephense-client",
+        "christian-kohler.path-intellisense",
+        "OldStarchy.twig-language",
+        "bradlc.vscode-tailwindcss",
+        "wayou.vscode-todo-highlight"
+    ]
+    // "unwantedRecommendations": []
+}

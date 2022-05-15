@@ -1,0 +1,70 @@
+version: '3'
+
+# Remplacer toutes les chaînes "timberplate" par un nom spécifique
+
+services:
+  timberplate-web:
+    image: php8.0-apache:timberplate
+    # Nom custom
+    container_name: timberplate-php-apache
+    ports:
+      # local:container
+      - "1337:80"
+    environment: 
+      - APACHE_DOCUMENT_ROOT=/var/www/html
+      - COMPOSER_ALLOW_SUPERUSER=1
+    # networks:
+    volumes:
+      - ./:/var/www/html
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - timberplate-db
+    # Lien vers le service "db" (déclaré ci-après) pour se connecter à la base de données
+    links:
+      - timberplate-db:timberplate-db
+    # Composer
+    # command: composer create-project --prefer-dist wordplate/wordplate /var/www/html && sed -i 's/DB_HOST.*/DB_HOST=db/' /var/www/html/.env
+
+  pma:
+    image: phpmyadmin/phpmyadmin
+    # Nom custom
+    container_name: timberplate-phpmyadmin
+    environment:
+      # https://docs.phpmyadmin.net/en/latest/setup.html#docker-environment-variables
+      PMA_HOST: timberplate-db
+      # PMA_PORT: 3306
+      # MYSQL_ROOT_PASSWORD: password
+      UPLOAD_LIMIT: 1024M
+    ports:
+      - "8080:80"
+    links:
+      - timberplate-db:timberplate-db
+
+  timberplate-db:
+    image: mariadb:latest
+    # Nom custom
+    container_name: timberplate-mysql
+    # Nous n'avons pas besoin de map le port avec le lien interne de pma
+    # ports:
+    #  - 3306:3306
+    # command: [
+    #  '--default_authentication_plugin=mysql_native_password',
+    #  '--character-set-server=utf8mb4',
+    #  '--collation-server=utf8mb4_unicode_ci'
+    #]
+    volumes:
+      # - ./wp-data:/docker-entrypoint-initdb.d
+      - ./db-data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: wordplate
+      # MYSQL_USER: user
+      # MYSQL_PASSWORD: password
+      # MYSQL_ROOT_PASSWORD: password
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      # MARIADB_RANDOM_ROOT_PASSWORD: "yes"
+
+# Volumes
+# volumes:
+  # db-data:

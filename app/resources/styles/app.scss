@@ -1,0 +1,8 @@
+/*
+ * Style compilés pour le thème WordPress
+ * Ce fichier est appelé par webpack.mix.js
+ */
+@import 'tailwind.css';
+
+
+// Possibilité d'utiliser import pour découper chaque fichier .scss de ce dossier (ou sous-dossiers) par cas d'usage

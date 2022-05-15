@@ -1,1 +1,0 @@
-# Starter WordPlate with Timber
