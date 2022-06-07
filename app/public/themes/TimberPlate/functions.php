@@ -39,9 +39,9 @@ class Kiwiplate extends TimberSite
         // Action
         add_action('init', [$this, 'register_taxonomy']);
         add_action('init', [$this, 'register_post_types']);
-        add_action('after_setup_theme', [$this, 'theme_supports']);
         add_action('wp_enqueue_scripts', [$this, 'register_custom_styles']);
         add_action('wp_enqueue_scripts', [$this, 'register_custom_scripts']);
+        add_action('after_setup_theme', [$this, 'register_custom_theme_support']);
 
         // Filter
         add_filter('timber_context', [$this, 'add_to_context']);
@@ -51,76 +51,22 @@ class Kiwiplate extends TimberSite
 
 
     /**
-     * theme_supports
+     * register_taxonomy
      *
      * @return void
      */
-    public function theme_supports()
+    public function register_taxonomy()
     {
-        // Custom logo
-        // https://developer.wordpress.org/reference/functions/add_theme_support/
-        add_theme_support('custom-logo');
-
-        // Add theme support for Translation
-        load_theme_textdomain('textdomain', get_template_directory() . '/language');
-
-        add_theme_support('menus');
-
-        // This theme uses wp_nav_menu() in one location.
-        register_nav_menus([
-            'header' => esc_html__('Header', 'textdomain'),
-            'footer' => esc_html__('footer', 'textdomain')
-        ]);
-
-        add_theme_support('title-tag');
-
-        // https://raidboxes.io/fr/blog/wordpress/wordpress-images-sizes/
-        add_theme_support('post-thumbnails');
-
-        add_theme_support('html5', [
-            'comment-form',
-            'comment-list',
-            'gallery',
-            'caption',
-        ]);
-
-        add_theme_support('post-formats', [
-            'aside',
-            'image',
-            'video',
-            'quote',
-            'link',
-            'gallery',
-            'audio',
-        ]);
-
-        add_filter('jpeg_quality', function () {
-            return 100;
-        }, 10, 2);
-
-        add_post_type_support('page', 'excerpt');
-
-        // Remove patterns gutenberg
-        // remove_theme_support('core-block-patterns');
-        // remove_theme_support('core-embed');
     }
 
 
     /**
-     * add_to_context
+     * register_post_types
      *
-     * @param  mixed $context
      * @return void
      */
-    public function add_to_context($context)
+    public function register_post_types()
     {
-        $custom_logo_url = wp_get_attachment_image_url(get_theme_mod('custom_logo'), 'full');
-        $context['custom_logo_url'] = $custom_logo_url;
-        $context['header']          = new Timber\Menu('Header', ['depth' => 1]);
-        $context['footer']          = new Timber\Menu('Footer');
-        $context['site']            = $this;
-
-        return $context;
     }
 
 
@@ -152,22 +98,88 @@ class Kiwiplate extends TimberSite
 
 
     /**
-     * register_post_types
+     * register_custom_theme
      *
      * @return void
+     *
+     * @link https://developer.wordpress.org/reference/functions/add_theme_support
      */
-    public function register_post_types()
+    public function register_custom_theme_support()
     {
+        // Menu
+        add_theme_support('menus');
+
+        // Menu location
+        register_nav_menus([
+            'header' => __("header", "textdomain"),
+            'footer' => __("footer", "textdomain")
+        ]);
+
+
+        // Custom logo
+        add_theme_support('custom-logo');
+
+        // Translation
+        load_theme_textdomain("textdomain", get_template_directory() . '/lang');
+
+        // Tilte
+        add_theme_support('title-tag');
+
+        // Featured image
+        // https://raidboxes.io/fr/blog/wordpress/wordpress-images-sizes/
+        add_theme_support('post-thumbnails');
+
+
+        //
+        add_theme_support('html5', [
+            'comment-list',
+            'comment-form',
+            'search-form',
+            'gallery',
+            'caption',
+            'style',
+            'script'
+        ]);
+
+        //
+        add_theme_support('post-formats', [
+            'aside',
+            'image',
+            'video',
+            'quote',
+            'link',
+            'gallery',
+            'audio',
+        ]);
+
+        // Image quality for thumbnails to be at the highest ratio possible
+        add_filter('jpeg_quality', function () {
+            return 100;
+        }, 10, 2);
+
+        // add_post_type_support('page', 'excerpt');
+
+        // Remove patterns gutenberg
+        // remove_theme_support('core-block-patterns');
+        // remove_theme_support('core-embed');
     }
 
 
     /**
-     * register_taxonomy
+     * add_to_context
      *
+     * @param mixed $context
      * @return void
      */
-    public function register_taxonomy()
+    public function add_to_context($context)
     {
+        $custom_logo_url = wp_get_attachment_image_url(get_theme_mod('custom_logo'), 'full');
+        $context['custom_logo_url'] = $custom_logo_url;
+        $context['header']          = new Timber\Menu('Header', ['depth' => 1]);
+        $context['footer']          = new Timber\Menu('Footer');
+        $context['site']            = $this;
+
+        return $context;
     }
 }
 new Kiwiplate();
